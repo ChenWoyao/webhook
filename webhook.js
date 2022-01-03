@@ -26,6 +26,9 @@ let server = http.createServer(function (req, res) {
       let event = req.headers['x-github-event'];
       //github传递了请求体body,同时传递了签名，需要验证签名是否正确
       let signatrue = req.headers['x-hub-signature'];
+      console.log('signatrue:', signatrue);
+      console.log('sign:', sign(body));
+      console.log('event:', event);
       if (signatrue !== sign(body)) {
         //sign不相等 直接返回错误
         return res.end('Not Allowed');
@@ -39,6 +42,7 @@ let server = http.createServer(function (req, res) {
       //自动化部署
       if (event == 'push') {
         let payload = JSON.parse(body);
+        console.log('payload:', payload);
         let name = './' + payload.repository.name + '.sh';
         //开启子进程自动执行对应的sh部署脚本，提交back就执行 sh back.sh 的子进程
         let child = spawn('sh', [name]);
@@ -51,8 +55,7 @@ let server = http.createServer(function (req, res) {
         });
         child.stdout.on('end', function (buffer) {
           let log = Buffer.concat(buffers);
-          console.log('log');
-          console.log(log);
+          console.log('log:', log);
         });
       }
     });
