@@ -30,10 +30,10 @@ let server = http.createServer(function (req, res) {
       console.log('signatrue:', signatrue);
       console.log('sign:', sign(body));
       console.log('event:', event);
-      if (signatrue !== sign(body)) {
-        //sign不相等 直接返回错误
-        return res.end('Not Allowed');
-      }
+      // if (signatrue !== sign(body)) {
+      //   //sign不相等 直接返回错误
+      //   return res.end('Not Allowed');
+      // }
       //sign相同 执行同意请求
       //设置github请求的请求头，设置返回数据的格式为json
       res.setHeader('Content-Type', 'application/json');
